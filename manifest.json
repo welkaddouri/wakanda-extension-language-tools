@@ -1,0 +1,38 @@
+{
+	"extension": {
+		"name": "languagetools",
+		"version": "1.0.0",
+		"description": "Autocompletion, Syntax & Semantic checking, Goto Definiton and more..",
+		"icon": "icon.png",
+		"actions": [
+			{
+				"name": "onAutoComplete",
+				"title": "onAutoComplete",
+				"targets":	[ { "uti": "com.netscape.javascript-source" }],
+				"trigger": [ { "event": "onAutoComplete" } ]
+			},
+			{
+				"name": "onCheckSyntax",
+				"title": "onCheckSyntax",
+				"targets":	[ { "uti": "com.netscape.javascript-source" }],
+				"trigger": [ { "event": "onCheckSyntax" } ]
+			},
+            {
+                "name": "initAutoComplete",
+                "title": "initAutoComplete",
+                "trigger": [ { "event": "onSolutionOpened" } ]
+            },
+            {
+                "name": "onCatalogUpdate",
+                "title": "onCatalogUpdate",
+                "trigger": [ { "event": "onCatalogUpdate" } ]
+            },
+            {
+                "name": "onSolutionBeforeClosing",
+                "title": "onSolutionBeforeClosing",
+                "trigger": [ { "event": "onSolutionBeforeClosing" } ]
+            }
+		],
+		"lifetime": "application_lifetime"
+	}	
+}
