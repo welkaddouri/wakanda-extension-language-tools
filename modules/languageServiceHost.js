@@ -153,14 +153,15 @@ languageServiceHost.prototype.resolveModuleNames = function(moduleNames, contain
 
         if(modulePath.indexOf("./") === 0)
         {
-            var possiblePath = (new File(containingFile)).parent.path + modulePath + ext;
+            var parentPath   = (new File(containingFile)).parent.path;
+            var possiblePath = normalizePath(parentPath + modulePath + ext);
 
             possiblePaths.push(possiblePath);
         }
         else
         {
-            possiblePaths.push(project + "modules/" + modulePath + ext);
-            possiblePaths.push(project + "Modules/" + modulePath + ext);
+            possiblePaths.push(normalizePath(project + "modules/" + modulePath + ext));
+            possiblePaths.push(normalizePath(project + "Modules/" + modulePath + ext));
         }
 
         possiblePaths.some(function(path){
@@ -185,3 +186,8 @@ languageServiceHost.prototype.resolveModuleNames = function(moduleNames, contain
 };
 
 module.exports = languageServiceHost;
+
+function normalizePath(path)
+{
+    return path.replace(new RegExp("(//|/\\./)","g"), "/");
+}

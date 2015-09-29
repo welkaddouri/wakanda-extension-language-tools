@@ -328,12 +328,15 @@ function loadFolder(folder, host)
     }
 }
 
-function normalizePath(path){
-    return path.replace(new RegExp("//","g"), "/");
+function normalizePath(path)
+{
+    return path.replace(new RegExp("(//|/\\./)","g"), "/");
 }
 
-function requireModule(relPath){
-  var path = (rootPath+"/"+relPath).replace(new RegExp("//","g"),"/");
-
+function requireModule(relPath)
+{
+  var path = normalizePath(rootPath+"/"+relPath);
+  
   return require(path);
 }
+
