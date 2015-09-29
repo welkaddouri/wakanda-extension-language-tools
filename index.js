@@ -31,18 +31,19 @@ exports.handleMessage = function handleMessage(message){
     var startDate   = new Date();
     var action      = message.action;
 
-    if( action ) {
-
+    if( action )
+    {
         var result = actions[action](message);
         var endDate = new Date();
 
         //LOG_LEVEL_INFO && log(action + " executed in " + (endDate - startDate).toString() + "ms" );
 
         return result;
-    } else {
+    }
+    else
+    {
         return false;
     }
-
 };
 
 actions.initAutoComplete = function(message){
@@ -144,21 +145,23 @@ actions.onCatalogUpdate = function(event){
     var context   = "4"; //standing for the Model context
     var project   = getProjectPath(); //Is this always true ?
 
-    try{
+    try
+    {
         var dataclasses = JSON.parse(modelJson).dataClasses;
-    }catch(e){
+    }
+    catch(e)
+    {
         //LOG_LEVEL_ERROR && log("Error while parsing the model definition");
         return;
     }
 
-    if(!dataclasses || dataclasses.length == 0){
+    if(!dataclasses || dataclasses.length == 0)
+    {
         return;
     }
 
     var generator = requireModule("modules/modelGenerator");
-
     var content   = generator.generateModel(dataclasses);
-
     var request   = {
         action : "updateFile",
         data : {
@@ -174,7 +177,7 @@ actions.onCatalogUpdate = function(event){
     //LOG_LEVEL_VERBOSE && log("response update MODEL: " + JSON.stringify(response) );
 
     content = generator.generateDS(dataclasses);
-    request   = {
+    request = {
         action : "updateFile",
         data : {
             project : project,
@@ -193,8 +196,8 @@ actions.onCatalogUpdate = function(event){
     return response;
 };
 
-function sendRequest(options){
-
+function sendRequest(options)
+{
     var path        = rootPath;
     var worker		= new SharedWorker( path + 'worker.js' , "languageTools" );
     var port	    = worker.port;
@@ -240,8 +243,10 @@ function sendRequest(options){
     return response;
 }
 
-function logSharedWorkerInfo(request, response){
-    if (response && response.info){
+function logSharedWorkerInfo(request, response)
+{
+    if (response && response.info)
+    {
         var content = ""
         response.info.forEach(function(line){
             content += "[SW INFO] : " + line + "\n";
@@ -250,18 +255,22 @@ function logSharedWorkerInfo(request, response){
     }
 }
 
-function logSharedWorkerErrors(request, response){
-    if (response && response.type === "error"){
+function logSharedWorkerErrors(request, response)
+{
+    if (response && response.type === "error")
+    {
         log("[SW ERROR] : action - " + request.action);
         log("[DETAILS] : " + JSON.stringify(response.data));
     }
 }
 
-function log(message){
+function log(message)
+{
     debug && studio.log(message);
 }
 
-function getProjectPath(){
+function getProjectPath()
+{
     return File(studio.getSelectedProjects()[0]).parent.path;
 }
 
