@@ -40,6 +40,7 @@ exports.generateModel = function(dataclasses){
 };
 
 exports.generateDS = function(dataclasses){
+	
 	var dsTemplate        = "\
 interface GeneratedDataStore extends Datastore {\n\
 	{{dataclasses}}\n\
@@ -139,7 +140,8 @@ interface DS{{dataclass}}EntityCollection extends EntityCollection{\n\
 	return output;
 };
 
-function replacePatterns(template, list){
+function replacePatterns(template, list)
+{
 	var output = template;
 
 	list.forEach(function(element){
@@ -149,11 +151,13 @@ function replacePatterns(template, list){
 	return output;
 };
 
-function replacePattern(template, variable, value){
+function replacePattern(template, variable, value)
+{
 	return template.replace(new RegExp("\\{\\{"+variable+"\\}\\}", "g"), value);
 }
 
-function getAttributeType(attribute){
+function getAttributeType(attribute)
+{
 	var attributeType;
 
 	switch(attribute.kind)
@@ -165,7 +169,8 @@ function getAttributeType(attribute){
 			attributeType = "DS" + attribute.type.replace("Collection", "") + "EntityCollection";
 			break;
 		default:
-			switch(attribute.type){
+			switch(attribute.type)
+			{
 				case "date":
 					attributeType = "Date";
 					break
