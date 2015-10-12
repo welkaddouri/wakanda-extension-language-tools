@@ -271,7 +271,7 @@ function log(message)
 
 function getProjectPath()
 {
-    return File(studio.getSelectedProjects()[0]).parent.path;
+    return studio.getSelectedProjects().length > 0 ? File(studio.getSelectedProjects()[0]).parent.path : null;
 }
 
 function normalizePath(path)
