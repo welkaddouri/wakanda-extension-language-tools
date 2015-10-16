@@ -199,7 +199,7 @@ actions.onCatalogUpdate = function(event){
 function sendRequest(options)
 {
     var path        = rootPath;
-    var worker		= new SharedWorker( path + 'worker.js' , "languageTools" );
+    var worker		= new SharedWorker( path + 'worker.js' , "wakanda-extension-language-tools" );
     var port	    = worker.port;
     var action      = options.action;
     var data        = options.data;

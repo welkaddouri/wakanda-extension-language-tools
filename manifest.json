@@ -1,6 +1,6 @@
 {
 	"extension": {
-		"name": "languagetools",
+		"name": "wakanda-extension-language-tools",
 		"version": "1.0.0",
 		"description": "Autocompletion, Syntax & Semantic checking, Goto Definiton and more..",
 		"icon": "icon.png",
