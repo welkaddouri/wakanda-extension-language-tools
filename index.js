@@ -160,7 +160,7 @@ actions.onCatalogUpdate = function(event){
         return;
     }
 
-    var generator = requireModule("modules/modelGenerator");
+    var generator = require("modelGenerator");    
     var content   = generator.generateModel(dataclasses);
     var request   = {
         action : "updateFile",
@@ -203,7 +203,7 @@ function sendRequest(options)
     var port	    = worker.port;
     var action      = options.action;
     var data        = options.data;
-	var timeout     = options.timeout || 500;
+	var timeout     = options.timeout || (studio.isDebug() ? 5000 : 500);
     var isTimeout   = true;
     var response    = null;
     var request     = {
@@ -282,31 +282,5 @@ function normalizePath(path)
 function requireModule(relPath)
 {
   var path = normalizePath(rootPath+"/"+relPath);
-
   return require(path);
 }
-
-/*
- * Actions to control logging level
- * Can be enhanced
- */
-actions.logLevelVerbose = function(){
-    debug = true;
-    LOG_LEVEL_VERBOSE = true;
-    LOG_LEVEL_INFO    = true;
-    LOG_LEVEL_ERROR   = true;
-};
-
-actions.logLevelInfo = function(){
-    debug = true;
-    LOG_LEVEL_VERBOSE = false;
-    LOG_LEVEL_INFO    = true;
-    LOG_LEVEL_ERROR   = true;
-};
-
-actions.logLevelError = function(){
-    debug = true;
-    LOG_LEVEL_VERBOSE = false;
-    LOG_LEVEL_INFO    = false;
-    LOG_LEVEL_ERROR   = true;
-};

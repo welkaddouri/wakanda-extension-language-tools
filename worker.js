@@ -166,7 +166,7 @@ function getAutoCompletion(options)
     var sourceFile  = languageService.getSourceFile(path);
     var position    = TS.getPositionOfLineAndCharacter(sourceFile, line, character);
     var results     = languageService.getCompletionsAtPosition(path, position);
-    var fuzzaldrin  = requireModule("modules/fuzzaldrin/index");
+    var fuzzaldrin  = requireModule("fuzzaldrin");
     var kinds       = {
         "keyword" : "14",
         "function" : "55"
@@ -244,7 +244,7 @@ function createScript(options, contextInsteadOfFile)
 
     var isDSRelated         = options.context == "4" || options.context == "2";
     var id                  = (contextInsteadOfFile) ? options.context : options.path;
-    var LanguageServiceHost = requireModule("modules/languageServiceHost");
+    var LanguageServiceHost = requireModule("languageServiceHost");
     var host                = new LanguageServiceHost({
         ts : TS,
         CompilerOptions : null,
@@ -335,7 +335,7 @@ function normalizePath(path)
 
 function requireModule(relPath)
 {
-  var path = normalizePath(rootPath+"/"+relPath);
+  var path = normalizePath(rootPath+"/modules/"+relPath);
   
   return require(path);
 }
