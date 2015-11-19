@@ -76,8 +76,13 @@ actions.onAutoComplete = function(message){
     //LOG_LEVEL_INFO && log("****************************");
     //LOG_LEVEL_INFO && log("> actions.onAutoComplete");
 
+    var path      = message.source.data[1];    
+    
+    if(!belongsToSolution(path)){
+        return;
+    }
+    
     var context   = message.source.data[0];
-    var path      = message.source.data[1];
     var content   = message.source.data[2];
     var line      = parseInt(message.source.data[3]);
     var character = parseInt(message.source.data[4]);
@@ -109,9 +114,14 @@ actions.onCheckSyntax = function(message){
 
     //LOG_LEVEL_INFO && log("****************************");
     //LOG_LEVEL_INFO && log("> actions.onCheckSyntax");
-
-    var context   = message.source.data[0];
+   
     var path      = message.source.data[1];
+    
+    if(!belongsToSolution(path)){
+        return;
+    }
+    
+    var context   = message.source.data[0];
     var content   = message.source.data[2];
     var project   = getProjectPath();
     var request   = {
@@ -283,4 +293,17 @@ function requireModule(relPath)
 {
   var path = normalizePath(rootPath+"/"+relPath);
   return require(path);
+}
+
+function belongsToSolution(path) {
+    if(!studio.currentSolution.getSolutionFile()){
+      return false;
+    }
+
+    var solutionPath = studio.currentSolution.getSolutionFile().parent.parent.path;
+    if(path.indexOf(solutionPath) !== 0){
+      return false;
+    }
+
+    return true;
 }
