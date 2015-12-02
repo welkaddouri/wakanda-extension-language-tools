@@ -24,9 +24,20 @@ var LOG_LEVEL_VERBOSE = false;
 var LOG_LEVEL_INFO    = false;
 var LOG_LEVEL_ERROR   = false;
 
+var CONFIG       = {};
 var actions      = {};
 var rootPath     = studio.extension.getFolder().path;
 
+/*
+ * Configuration
+ */
+CONFIG.MAX_LENGTH     = 80 * 100;
+CONFIG.MAX_WAIT       = 500;
+CONFIG.MAX_WAIT_DEBUG = 5000;
+
+/*
+ * Entry Point For All Actions
+ */
 exports.handleMessage = function handleMessage(message){
     var startDate   = new Date();
     var action      = message.action;
@@ -46,6 +57,9 @@ exports.handleMessage = function handleMessage(message){
     }
 };
 
+/*
+ * Actions
+ */
 actions.initAutoComplete = function(message){
     //LOG_LEVEL_INFO && log("****************************");
     //LOG_LEVEL_INFO && log("> actions.initAutoComplete");
@@ -77,13 +91,13 @@ actions.onAutoComplete = function(message){
     //LOG_LEVEL_INFO && log("> actions.onAutoComplete");
 
     var path      = message.source.data[1];    
+    var content   = message.source.data[2];
     
-    if(!belongsToSolution(path)){
+    if(skipFile({"path" : path,"content" : content}) ){
         return;
     }
     
     var context   = message.source.data[0];
-    var content   = message.source.data[2];
     var line      = parseInt(message.source.data[3]);
     var character = parseInt(message.source.data[4]);
     var project   = getProjectPath();
@@ -116,13 +130,13 @@ actions.onCheckSyntax = function(message){
     //LOG_LEVEL_INFO && log("> actions.onCheckSyntax");
    
     var path      = message.source.data[1];
+    var content   = message.source.data[2];
     
-    if(!belongsToSolution(path)){
+    if(skipFile({"path" : path,"content" : content}) ){
         return;
     }
     
-    var context   = message.source.data[0];
-    var content   = message.source.data[2];
+    var context   = message.source.data[0];    
     var project   = getProjectPath();
     var request   = {
         action : "errors",
@@ -206,6 +220,9 @@ actions.onCatalogUpdate = function(event){
     return response;
 };
 
+/*
+ * Helper Functions
+ */
 function sendRequest(options)
 {
     var path        = rootPath;
@@ -213,7 +230,7 @@ function sendRequest(options)
     var port	    = worker.port;
     var action      = options.action;
     var data        = options.data;
-	var timeout     = options.timeout || (studio.isDebug() ? 5000 : 500);
+	var timeout     = options.timeout || (studio.isDebug() ? CONFIG.MAX_WAIT_DEBUG : CONFIG.MAX_WAIT);
     var isTimeout   = true;
     var response    = null;
     var request     = {
@@ -306,4 +323,16 @@ function belongsToSolution(path) {
     }
 
     return true;
+}
+
+function skipFile(params){
+    if(!belongsToSolution(params.path)){
+        return true;
+    }    
+    
+    if(params.content.length > CONFIG.MAX_LENGTH ){
+        return true;
+    }
+    
+    return false;
 }
