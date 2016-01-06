@@ -17,6 +17,12 @@
 				"targets":	[ { "uti": "com.netscape.javascript-source" }],
 				"trigger": [ { "event": "onCheckSyntax" } ]
 			},
+			{
+				"name": "onGoToDefinition",
+				"title": "onGotoDefinition",
+				"targets":	[ { "uti": "com.netscape.javascript-source" }],
+				"trigger": [ { "event": "onGotoDefinition" } ]
+			},
             {
                 "name": "initAutoComplete",
                 "title": "initAutoComplete",
